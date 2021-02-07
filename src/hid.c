@@ -154,8 +154,9 @@ int rv_open_device() {
 int rv_wait_for_ctrl_device() {
 	unsigned char buffer[] = { 0x04, 0x00, 0x00, 0x00 };
 	int res;
+	int attempts = 0;
 
-	while (1) {
+	while (attempts++ < 2) {
 		// 150ms is the magic number here, should suffice on first try.
 		usleep(150000);
 
