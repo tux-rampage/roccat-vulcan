@@ -195,6 +195,8 @@ int main(int argc, char* argv[])
 
 	switch (mode) {
 		case RV_MODE_TOPO:
+			rv_printf(RV_LOG_NORMAL, "MODE: TOPO\n");
+
 			if (rv_open_device() < 0) {
 				rv_printf(RV_LOG_NORMAL, "Error: Unable to find keyboard\n");
 				return RV_FAILURE;
@@ -210,11 +212,14 @@ int main(int argc, char* argv[])
 				return RV_FAILURE;
 			};
 
+			rv_printf(RV_LOG_NORMAL, "LEDs initialized (TOPO)\n");
 			(*topo_func)();
 
 		break;
 
 		case RV_MODE_WAVE:
+			rv_printf(RV_LOG_NORMAL, "MODE: WAVE\n");
+
 			if (rv_open_device() < 0) {
 				rv_printf(RV_LOG_NORMAL, "Error: Unable to find keyboard\n");
 				return RV_FAILURE;
@@ -228,6 +233,7 @@ int main(int argc, char* argv[])
 		break;
 
 		case RV_MODE_FX:
+			rv_printf(RV_LOG_NORMAL, "MODE: Fx\n");
 
 			if (fx_mode == FX_MODE_PIPED) {
 				rv_printf(RV_LOG_NORMAL, "Reading commands pipe '%s'\n", file_name);
@@ -249,6 +255,7 @@ int main(int argc, char* argv[])
 					return RV_FAILURE;
 				};
 
+				rv_printf(RV_LOG_NORMAL, "LEDs initialized (Piped mode)\n");
 				rv_fx_piped(file_name);
 			}
 			else {
@@ -265,16 +272,19 @@ int main(int argc, char* argv[])
 					return RV_FAILURE;
 				}
 
+				rv_printf(RV_LOG_NORMAL, "Sending init ...\n");
 				if (rv_send_init(RV_MODE_FX, -1)) {
 					rv_printf(RV_LOG_NORMAL, "Error: Failed to send initialization sequence.\n");
 					return RV_FAILURE;
 				}
 
+				rv_printf(RV_LOG_NORMAL, "Initializing fx ...\n");
 				if (rv_fx_init() != 0) {
 					rv_printf(RV_LOG_NORMAL, "Error: Failed to initialize LEDs\n");
 					return RV_FAILURE;
 				};
 
+				rv_printf(RV_LOG_NORMAL, "LEDs initialized\n");
 				rv_fx_impact();
 			}
 		break;
